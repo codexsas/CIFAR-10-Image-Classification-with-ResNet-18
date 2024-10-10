@@ -5,7 +5,7 @@ This project implements image classification on the CIFAR-10 dataset using a Res
 - Data Augmentation: Random cropping and normalization applied.
 - Model Evaluation: Outputs test accuracy and visualizes sample predictions.
 
-#Prerequisites
+# Prerequisites
 -Python 3.x
 -PyTorch
 -torchvision
