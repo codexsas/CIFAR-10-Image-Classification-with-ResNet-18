@@ -4,10 +4,10 @@ This project implements image classification on the CIFAR-10 dataset using a Res
 - Transfer Learning: Utilizes a pretrained ResNet-18 model.
 - Data Augmentation: Random cropping and normalization applied.
 - Model Evaluation: Outputs test accuracy and visualizes sample predictions.
-Getting Started
-Prerequisites
-Python 3.x
-PyTorch
-torchvision
-matplotlib
-NumPy
+
+#Prerequisites
+-Python 3.x
+-PyTorch
+-torchvision
+-matplotlib
+-NumPy
