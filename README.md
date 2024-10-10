@@ -6,7 +6,7 @@ This project implements image classification on the CIFAR-10 dataset using a Res
 - Model Evaluation: Outputs test accuracy and visualizes sample predictions.
 
 # Prerequisites
--Python 3.x
+-Python 
 -PyTorch
 -torchvision
 -matplotlib
