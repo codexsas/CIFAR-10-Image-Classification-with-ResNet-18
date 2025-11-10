@@ -10,7 +10,7 @@ import time
 import os
 import copy
 
-# Ensure pixel values are between 0 and 1
+
 def imshow(inp, title):
     """Imshow for Tensor."""
     inp = inp.numpy().transpose((1, 2, 0))
@@ -25,12 +25,12 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=1):
     best_model_wts = copy.deepcopy(model.state_dict())
     best_acc = 0.0
 
-    # Iterates through specific number of epochs
+    
     for epoch in range(num_epochs):
         print('Epoch {}/{}'.format(epoch, num_epochs - 1))
         print('-' * 10)
 
-        # Switches between training and validation modes
+      
         for phase in ['train', 'val']:
             if phase == 'train':
                 model.train()  # Set model to training mode
@@ -40,19 +40,18 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=1):
             running_loss = 0.0
             running_corrects = 0
 
-            # Iterate over data.
+            
             for inputs, labels in dataloaders[phase]:
                 inputs = inputs.to(device)
                 labels = labels.to(device)
 
-                # Forward
-                # Track history if only in train
+                # Forward   
                 with torch.set_grad_enabled(phase == 'train'):
                     outputs = model(inputs)
                     _, preds = torch.max(outputs, 1)
                     loss = criterion(outputs, labels)
 
-                    # Backward + optimize only if in training phase
+                    # Backward + optimize 
                     if phase == 'train':
                         optimizer.zero_grad()
                         loss.backward()
@@ -70,24 +69,23 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=1):
 
             print('{} Loss: {:.4f} Acc: {:.4f}'.format(phase, epoch_loss, epoch_acc))
 
-            # Deep copy the model
+            
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
 
         print()
 
-    # Total time taken
+    
     time_elapsed = time.time() - since
     print('Training complete in {:.0f}m {:.0f}s'.format(time_elapsed // 60, time_elapsed % 60))
     print('Best val Acc: {:4f}'.format(best_acc))
-
-    # Load best model weights
+    
     model.load_state_dict(best_model_wts)
     return model
 
 if __name__ == '__main__':
-    # Mean and standard deviation for CIFAR-10 dataset
+    
     mean = np.array([0.5, 0.5, 0.5])
     std = np.array([0.5, 0.5, 0.5])
 
@@ -120,23 +118,23 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Load and modify ResNet model
+   
     model = models.resnet18(weights='DEFAULT')
     num_ftrs = model.fc.in_features
-    model.fc = nn.Linear(num_ftrs, 10)  # CIFAR-10 has 10 classes
+    model.fc = nn.Linear(num_ftrs, 10)  
     model = model.to(device)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     step_lr_scheduler = lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 
-    # Train the model
+    
     model = train_model(model, criterion, optimizer, step_lr_scheduler, num_epochs=25)
 
-    # Save the model
+    
     torch.save(model.state_dict(), 'cifar10_resnet.pth')
 
-    # Evaluate the model
+    
     model.eval()
     correct = 0
     total = 0
@@ -150,7 +148,7 @@ if __name__ == '__main__':
 
     print(f'Test Accuracy: {100 * correct / total:.2f}%')
 
-    # Display some sample images with predicted labels
+    
     dataiter = iter(dataloaders['val'])
     images, labels = next(dataiter)
     outputs = model(images.to(device))
@@ -158,3 +156,4 @@ if __name__ == '__main__':
 
     for i in range(4):
         imshow(images[i], title=f'Ground Truth: {class_names[labels[i]]}, Predicted: {class_names[predicted[i].cpu().numpy()]}')
+
